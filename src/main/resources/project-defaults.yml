@@ -1,6 +1,6 @@
 swarm:
   deployment:
-    example-jaas-basic.war:
+    rest-escuela.war:
       web:
         login-config:
           auth-method: BASIC
