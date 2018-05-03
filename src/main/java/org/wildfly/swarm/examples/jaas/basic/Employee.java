@@ -1,8 +1,5 @@
 package org.wildfly.swarm.examples.jaas.basic;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author Arun Gupta
@@ -21,7 +19,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
         @NamedQuery(name = "Employee.findAll", query = "SELECT e FROM Employee e")
 })
-@XmlRootElement
 public class Employee implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -81,21 +78,15 @@ public class Employee implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (null == obj)
-            return false;
-        if (!(obj instanceof Employee))
-            return false;
-        Employee that = (Employee) obj;
-        if (that.name.equals(this.name) && that.id == this.id)
-            return true;
-        else
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.name);
+        return Objects.hash(id);
     }
-
 }

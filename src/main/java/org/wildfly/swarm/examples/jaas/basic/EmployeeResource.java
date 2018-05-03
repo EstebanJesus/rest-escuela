@@ -7,6 +7,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 /**
@@ -18,14 +20,14 @@ public class EmployeeResource {
 
     @PersistenceContext
     EntityManager em;
-    @Context 
+    @Context
     SecurityContext securityContext;
 
     @GET
     @Produces("application/json")
-    public Employee[] get() {
+    public Response get() {
         return securityContext.isUserInRole("admin")
-            ? em.createNamedQuery("Employee.findAll", Employee.class).getResultList().toArray(new Employee[0])
-            : new Employee[0];
+                ? Response.ok(em.createNamedQuery("Employee.findAll", Employee.class).getResultList(), MediaType.APPLICATION_JSON_TYPE).build()
+                : Response.noContent().build();
     }
 }
