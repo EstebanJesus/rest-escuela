@@ -7,8 +7,8 @@ swarm:
           security-domain: my-domain
         security-constraints:
           - url-pattern: /*
-            methods: [GET]
-            roles: [admin, user]
+            methods: [GET, POST]
+            roles: [admin, profesor, alumno]
   security:
     security-domains:
       my-domain:
@@ -19,8 +19,8 @@ swarm:
               flag: required
               module-options:
                 dsJndiName: java:jboss/datasources/MyDS
-                principalsQuery: SELECT password FROM REST_DB_ACCESS WHERE name=?
-                rolesQuery: SELECT role, 'Roles' FROM REST_DB_ACCESS WHERE name=?
+                principalsQuery: SELECT clave FROM usuario WHERE nombre_usuario=?
+                rolesQuery: SELECT r.descripcion, 'Roles' FROM usuario AS u INNER JOIN usuario_rol AS ur ON (u.id=ur.usuario_id) INNER JOIN rol AS r ON (r.id=ur.rol_id) WHERE u.nombre_usuario=?
   datasources:
     data-sources:
       MyDS:
