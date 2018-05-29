@@ -6,6 +6,10 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "clase")
+@NamedQueries({
+        @NamedQuery(name = "Clase.obtenerClasesPorCurso",
+                query = "select cl from Clase cl where cl.curso.id = ?1")
+})
 public class Clase {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

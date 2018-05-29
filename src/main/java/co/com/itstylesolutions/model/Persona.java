@@ -41,7 +41,7 @@ import java.util.Objects;
         @NamedQuery(name = "Persona.obtenerPersona",
                 query = "select p from Persona p where p.usuario.nombreUsuario = ?1"),
         @NamedQuery(name = "Persona.obtenerCursosPorPersona",
-                query = "select c from Persona p inner join p.cursos c left outer join c.cursoList cl where p.id = ?1"),
+                query = "select c from Persona p inner join p.cursos c where p.id = ?1"),
 })
 public class Persona {
 

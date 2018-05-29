@@ -1,9 +1,10 @@
 package co.com.itstylesolutions.rest;
 
+import co.com.itstylesolutions.model.Clase;
 import co.com.itstylesolutions.model.Curso;
-import co.com.itstylesolutions.model.parametricas.Especialidad;
 import co.com.itstylesolutions.model.Persona;
 import co.com.itstylesolutions.model.Profesor;
+import co.com.itstylesolutions.model.parametricas.Especialidad;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.stream.Collectors;
 
 @Path("/")
 @RequestScoped
@@ -37,14 +39,17 @@ public class UsuarioResource {
         Persona singleResult = em.createNamedQuery("Persona.obtenerPersona", Persona.class)
                 .setParameter(1, securityContext.getUserPrincipal().getName())
                 .getSingleResult();
-        if (singleResult instanceof Profesor) {
+        if (singleResult instanceof Profesor)
             ((Profesor) singleResult).setEspecialidades(em.createNamedQuery("Profesor.obtenerEspecialidadesPorProfesor", Especialidad.class)
-                    .setParameter(1, singleResult.getId())
-                    .getResultList());
-        }
-        singleResult.setCursos(em.createNamedQuery("Persona.obtenerCursosPorPersona", Curso.class)
-                .setParameter(1, singleResult.getId())
-                .getResultList());
+                    .setParameter(1, singleResult.getId()).getResultList());
+        singleResult.setCursos(
+                em.createNamedQuery("Persona.obtenerCursosPorPersona", Curso.class)
+                        .setParameter(1, singleResult.getId())
+                        .getResultList().stream()
+                        .peek(curso -> curso.setClaseList(em.createNamedQuery("Clase.obtenerClasesPorCurso", Clase.class)
+                                .setParameter(1, curso.getId()).getResultList())
+                        ).collect(Collectors.toList())
+        );
         return singleResult;
     }
 }

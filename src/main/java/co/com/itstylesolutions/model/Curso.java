@@ -21,8 +21,8 @@ public class Curso {
     @Basic
     @Column(name = "palabras_clave")
     private String palabrasClave;
-    @OneToMany(mappedBy = "curso", fetch = FetchType.EAGER)
-    private List<Clase> cursoList;
+    @Transient
+    private List<Clase> claseList;
 
     public Curso() {
     }
@@ -75,12 +75,13 @@ public class Curso {
         this.palabrasClave = palabrasClave;
     }
 
-    public List<Clase> getCursoList() {
-        return cursoList;
+    public List<Clase> getClaseList() {
+        return claseList;
     }
 
-    public void setCursoList(List<Clase> cursoList) {
-        this.cursoList = cursoList;
+    public void setClaseList(List<Clase> claseList) {
+        this.claseList = claseList;
     }
+
     //</editor-fold>
 }
