@@ -1,6 +1,7 @@
 package co.com.itstylesolutions.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "curso")
@@ -9,7 +10,7 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "materia_id")
     private Materia materia;
     @Basic
@@ -20,6 +21,8 @@ public class Curso {
     @Basic
     @Column(name = "palabras_clave")
     private String palabrasClave;
+    @OneToMany(mappedBy = "curso", fetch = FetchType.EAGER)
+    private List<Clase> cursoList;
 
     public Curso() {
     }
@@ -70,6 +73,14 @@ public class Curso {
 
     public void setPalabrasClave(String palabrasClave) {
         this.palabrasClave = palabrasClave;
+    }
+
+    public List<Clase> getCursoList() {
+        return cursoList;
+    }
+
+    public void setCursoList(List<Clase> cursoList) {
+        this.cursoList = cursoList;
     }
     //</editor-fold>
 }

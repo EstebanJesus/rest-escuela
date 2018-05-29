@@ -30,6 +30,7 @@ package co.com.itstylesolutions.model;
  */
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,9 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
         @NamedQuery(name = "Persona.obtenerPersona",
-                query = "select p from Persona p join fetch p.cursos c where p.usuario.nombreUsuario = ?1")
+                query = "select p from Persona p where p.usuario.nombreUsuario = ?1"),
+        @NamedQuery(name = "Persona.obtenerCursosPorPersona",
+                query = "select c from Persona p inner join p.cursos c left outer join c.cursoList cl where p.id = ?1"),
 })
 public class Persona {
 
@@ -64,6 +67,7 @@ public class Persona {
     private List<Curso> cursos;
 
     public Persona() {
+        cursos = new ArrayList<>();
     }
 
     public Persona(String apellidos, String nombres) {

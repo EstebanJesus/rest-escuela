@@ -1,4 +1,4 @@
-package co.com.itstylesolutions.model;
+package co.com.itstylesolutions.model.parametricas;
 
 import javax.persistence.*;
 

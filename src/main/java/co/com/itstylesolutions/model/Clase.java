@@ -1,5 +1,7 @@
 package co.com.itstylesolutions.model;
 
+import co.com.itstylesolutions.model.parametricas.Aula;
+
 import javax.persistence.*;
 
 @Entity

@@ -1,6 +1,9 @@
 package co.com.itstylesolutions.rest;
 
+import co.com.itstylesolutions.model.Curso;
+import co.com.itstylesolutions.model.parametricas.Especialidad;
 import co.com.itstylesolutions.model.Persona;
+import co.com.itstylesolutions.model.Profesor;
 
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
@@ -25,10 +28,23 @@ public class UsuarioResource {
     @GET
     @Produces("application/json")
     public Response get() {
-        return securityContext.isUserInRole("admin")
-                ? Response.ok(em.createNamedQuery("Persona.obtenerPersona", Persona.class)
-                .setParameter(1, securityContext.getUserPrincipal().getName())
-                .getSingleResult(), MediaType.APPLICATION_JSON_TYPE).build()
+        return securityContext.isUserInRole("admin") || securityContext.isUserInRole("profesor") || securityContext.isUserInRole("alumno")
+                ? Response.ok(getDatosIniciales(), MediaType.APPLICATION_JSON_TYPE).build()
                 : Response.noContent().build();
+    }
+
+    private Persona getDatosIniciales() {
+        Persona singleResult = em.createNamedQuery("Persona.obtenerPersona", Persona.class)
+                .setParameter(1, securityContext.getUserPrincipal().getName())
+                .getSingleResult();
+        if (singleResult instanceof Profesor) {
+            ((Profesor) singleResult).setEspecialidades(em.createNamedQuery("Profesor.obtenerEspecialidadesPorProfesor", Especialidad.class)
+                    .setParameter(1, singleResult.getId())
+                    .getResultList());
+        }
+        singleResult.setCursos(em.createNamedQuery("Persona.obtenerCursosPorPersona", Curso.class)
+                .setParameter(1, singleResult.getId())
+                .getResultList());
+        return singleResult;
     }
 }
