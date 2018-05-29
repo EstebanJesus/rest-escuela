@@ -30,8 +30,6 @@ package co.com.itstylesolutions.model;
  */
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -39,9 +37,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
         @NamedQuery(name = "Persona.obtenerPersona",
-                query = "select p from Persona p where p.usuario.nombreUsuario = ?1"),
-        @NamedQuery(name = "Persona.obtenerCursosPorPersona",
-                query = "select c from Persona p inner join p.cursos c where p.id = ?1"),
+                query = "select p from Persona p where p.usuario.nombreUsuario = ?1")
 })
 public class Persona {
 
@@ -60,14 +56,8 @@ public class Persona {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "persona_curso",
-            joinColumns = @JoinColumn(name = "persona_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "curso_id", referencedColumnName = "id"))
-    private List<Curso> cursos;
-
     public Persona() {
-        cursos = new ArrayList<>();
+
     }
 
     public Persona(String apellidos, String nombres) {
@@ -100,14 +90,6 @@ public class Persona {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public List<Curso> getCursos() {
-        return cursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        this.cursos = cursos;
     }
     //</editor-fold>
 
