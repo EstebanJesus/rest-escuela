@@ -30,6 +30,7 @@ package co.com.itstylesolutions.model;
  */
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -37,7 +38,9 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
         @NamedQuery(name = "Persona.obtenerPersona",
-                query = "select p from Persona p where p.usuario.nombreUsuario = ?1")
+                query = "select p from Persona p where p.usuario.nombreUsuario = ?1"),
+        @NamedQuery(name = "Persona.obtenerPorCurso",
+                query = "select p from Persona p inner join p.cursos c where c.id = ?1")
 })
 public class Persona {
 
@@ -56,32 +59,38 @@ public class Persona {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    public Persona() {
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "persona_curso",
+            joinColumns = @JoinColumn(name = "persona_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id", referencedColumnName = "id"))
+    private List<Curso> cursos;
 
-    }
-
-    public Persona(String apellidos, String nombres) {
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-    }
-
-    public Persona(Long id, String apellidos, String nombres) {
-        this.id = id;
-        this.nombres = nombres;
-        this.apellidos = apellidos;
-    }
+    @Column(name = "habilitado")
+    private boolean habilitado;
 
     //<editor-fold desc="Getters && Setters">
     public Long getId() {
-        return this.id;
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombres() {
-        return this.nombres;
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
     public String getApellidos() {
-        return this.apellidos;
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public Usuario getUsuario() {
@@ -91,6 +100,23 @@ public class Persona {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public List<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(List<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Equals && HashCode">
