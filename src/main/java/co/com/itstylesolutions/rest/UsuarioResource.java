@@ -12,17 +12,16 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import java.util.List;
 
 @Path("/")
 @RequestScoped
 public class UsuarioResource {
 
     @Inject
-    PersonaDelegate personaDelegate;
+    private PersonaDelegate personaDelegate;
 
     @Context
-    SecurityContext securityContext;
+    private SecurityContext securityContext;
 
     @GET
     @Produces("application/json")

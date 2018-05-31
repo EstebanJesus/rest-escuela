@@ -7,12 +7,17 @@ import co.com.itstylesolutions.model.Persona;
 import co.com.itstylesolutions.model.Profesor;
 import co.com.itstylesolutions.model.parametricas.Especialidad;
 
+import javax.decorator.Delegate;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PersonaDelegate {
+@Default
+@RequestScoped
+class PersonaDelegate {
     @PersistenceContext
     EntityManager em;
 

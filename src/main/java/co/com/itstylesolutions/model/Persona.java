@@ -29,6 +29,9 @@ package co.com.itstylesolutions.model;
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import co.com.itstylesolutions.model.converters.TipoDocumentoConverter;
+import co.com.itstylesolutions.model.enums.TipoDocumento;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +58,19 @@ public class Persona {
     @Column(name = "apellidos")
     private String apellidos;
 
+    @Column(name = "habilitado")
+    private boolean habilitado;
+
+    @Column(name = "tipo_documento")
+    @Convert(converter = TipoDocumentoConverter.class)
+    private TipoDocumento tipoDocumento;
+
+    @Column(name = "numero_documento")
+    private Long numeroDocumento;
+
+    @Column(name = "correo_personal")
+    private String correoPersonal;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -64,9 +80,6 @@ public class Persona {
             joinColumns = @JoinColumn(name = "persona_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "curso_id", referencedColumnName = "id"))
     private List<Curso> cursos;
-
-    @Column(name = "habilitado")
-    private boolean habilitado;
 
     //<editor-fold desc="Getters && Setters">
     public Long getId() {
@@ -93,6 +106,38 @@ public class Persona {
         this.apellidos = apellidos;
     }
 
+    public boolean isHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
+    }
+
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public Long getNumeroDocumento() {
+        return numeroDocumento;
+    }
+
+    public void setNumeroDocumento(Long numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
+    }
+
+    public String getCorreoPersonal() {
+        return correoPersonal;
+    }
+
+    public void setCorreoPersonal(String correoPersonal) {
+        this.correoPersonal = correoPersonal;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -108,15 +153,6 @@ public class Persona {
     public void setCursos(List<Curso> cursos) {
         this.cursos = cursos;
     }
-
-    public boolean isHabilitado() {
-        return habilitado;
-    }
-
-    public void setHabilitado(boolean habilitado) {
-        this.habilitado = habilitado;
-    }
-
     //</editor-fold>
 
     //<editor-fold desc="Equals && HashCode">
