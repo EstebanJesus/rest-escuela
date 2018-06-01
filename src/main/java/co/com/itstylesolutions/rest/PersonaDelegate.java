@@ -1,23 +1,17 @@
 package co.com.itstylesolutions.rest;
 
-import co.com.itstylesolutions.model.Administrador;
-import co.com.itstylesolutions.model.Alumno;
-import co.com.itstylesolutions.model.Curso;
-import co.com.itstylesolutions.model.Persona;
-import co.com.itstylesolutions.model.Profesor;
+import co.com.itstylesolutions.model.*;
 import co.com.itstylesolutions.model.parametricas.Especialidad;
 
-import javax.decorator.Delegate;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Default;
+import javax.enterprise.context.Dependent;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Default
-@RequestScoped
+@Dependent
 class PersonaDelegate {
+
     @PersistenceContext
     EntityManager em;
 
@@ -50,8 +44,13 @@ class PersonaDelegate {
     }
 
     Persona getPersona(String nombreUsuario) {
-        return em.createNamedQuery("Persona.obtenerPersona", Persona.class)
+        return em.createNamedQuery("Persona.obtenerPorUsuario", Persona.class)
                 .setParameter(1, nombreUsuario)
                 .getSingleResult();
+    }
+
+    Persona editarPersona(Persona persona) {
+        Persona singleResult = em.find(Persona.class, persona.getNumeroDocumento());
+        return null;
     }
 }

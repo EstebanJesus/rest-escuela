@@ -7,7 +7,7 @@ swarm:
           security-domain: my-domain
         security-constraints:
           - url-pattern: /*
-            methods: [GET, POST]
+            methods: [GET]
             roles: [admin, profesor, alumno]
   security:
     security-domains:
