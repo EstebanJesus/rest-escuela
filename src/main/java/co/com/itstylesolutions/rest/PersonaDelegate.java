@@ -49,8 +49,11 @@ class PersonaDelegate {
                 .getSingleResult();
     }
 
-    Persona editarPersona(Persona persona) {
-        Persona singleResult = em.find(Persona.class, persona.getNumeroDocumento());
-        return null;
+    void editarPersona(Persona persona) {
+        Persona singleResult = em.createNamedQuery("Persona.obtenerPorNumeroDocumento", Persona.class)
+                .setParameter(1, persona.getNumeroDocumento()).getSingleResult();
+        singleResult.setHabilitado(true);
+        singleResult.getUsuario().setClave(persona.getUsuario().getClave());
+        em.persist(singleResult);
     }
 }

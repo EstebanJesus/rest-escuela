@@ -4,6 +4,7 @@ import co.com.itstylesolutions.model.converters.TipoDocumentoConverter;
 import co.com.itstylesolutions.model.enums.TipoDocumento;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ import java.util.Objects;
         @NamedQuery(name = "Persona.obtenerPorNumeroDocumento",
                 query = "select p from Persona p where p.numeroDocumento = ?1")
 })
-public class Persona {
+public class Persona implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

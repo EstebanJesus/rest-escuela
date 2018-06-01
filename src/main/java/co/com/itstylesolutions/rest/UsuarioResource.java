@@ -4,6 +4,7 @@ import co.com.itstylesolutions.model.Persona;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.SecurityContext;
 
 @Path("/")
 @RequestScoped
+@Transactional
 public class UsuarioResource {
 
     @Inject
@@ -45,7 +47,7 @@ public class UsuarioResource {
     @Path("/sign_in")
     @Produces("application/json")
     public Response registrarse(Persona persona) {
-        Persona personaDatabase = personaDelegate.editarPersona(persona);
+        personaDelegate.editarPersona(persona);
         return Response.ok().build();
     }
 }
