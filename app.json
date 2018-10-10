@@ -1,0 +1,21 @@
+{
+  "name": "rest-escuela",
+  "description": "Ejemplo de un api REST",
+  "scripts": {
+  },
+  "env": {
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ]
+}
